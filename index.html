@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy Antojao | Delivery Local - Río San Juan & Cabrera</title>
+    <!-- Tailwind CSS para un diseño moderno, rápido y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-custom-orange { background-color: #f97316; }
+        .text-custom-orange { color: #f97316; }
+        .bg-custom-blue { background-color: #0284c7; }
+        .text-custom-blue { color: #0284c7; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Encabezado -->
+    <header class="bg-custom-blue text-white shadow-md py-4 px-6 text-center">
+        <h1 class="text-3xl font-black tracking-wide">TOY ANTOJAO</h1>
+        <p class="text-sm text-sky-100 font-medium">Delivery Local en Río San Juan & Cabrera</p>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-md mx-auto w-full p-4 my-4 bg-white rounded-2xl shadow-xl border border-slate-100">
+        <div class="text-center mb-6">
+            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pago en Efectivo Contra Entrega</span>
+            <h2 class="text-xl font-bold mt-2 text-slate-900">¿Qué se te antoja hoy?</h2>
+            <p class="text-xs text-slate-500">Llena tus datos y tu pedido llegará volando.</p>
+        </div>
+
+        <form id="orderForm" class="space-y-4">
+            <!-- Nombre -->
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tu Nombre</label>
+                <input type="text" id="clientName" required placeholder="Ej. Carlos Pérez" 
+                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
+            </div>
+
+            <!-- Dirección -->
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Dónde vives o estás? (Dirección / Referencia)</label>
+                <input type="text" id="clientAddress" required placeholder="Ej. Calle Duarte, cerca del parque, casa azul" 
+                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
+            </div>
+
+            <!-- Detalle del Pedido -->
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Qué quieres y de cuál negocio?</label>
+                <textarea id="orderDetails" rows="3" required placeholder="Ej. 1 Pica Pollo grande con tostones de El Primo y un refresco." 
+                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm"></textarea>
+            </div>
+
+            <!-- Devuelta para cuanto -->
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Devuelta para cuánto? (Efectivo)</label>
+                <input type="text" id="clientChange" required placeholder="Ej. Pagaré con un billete de 1,000 pesos" 
+                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
+            </div>
+
+            <!-- Botón de Enviar -->
+            <button type="submit" class="w-full bg-custom-orange hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 uppercase tracking-wider text-sm flex items-center justify-center space-x-2">
+                <span>¡Registrar Pedido por WhatsApp!</span>
+            </button>
+        </form>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        &copy; 2026 Toy Antojao. Todos los derechos reservados.
+    </footer>
+
+    <!-- Script de Automatización y Rotación de Repartidores -->
+    <script>
+        // Lista de números de WhatsApp de tus 3 o 4 repartidores (formato internacional sin el símbolo +)
+        const deliveryCouriers = [
+            "18090000001", // Reemplaza con el teléfono del Repartidor 1
+            "18090000002", // Reemplaza con el teléfono del Repartidor 2
+            "18090000003"  // Reemplaza con el teléfono del Repartidor 3
+        ];
+
+        // Función para rotar y seleccionar un repartidor automáticamente
+        function getNextCourier() {
+            let currentIndex = localStorage.getItem('courier_index') || 0;
+            currentIndex = parseInt(currentIndex);
+            
+            const selectedCourier = deliveryCouriers[currentIndex];
+            
+            // Pasar al siguiente repartidor para el próximo pedido
+            let nextIndex = (currentIndex + 1) % deliveryCouriers.length;
+            localStorage.setItem('courier_index', nextIndex);
+            
+            return selectedCourier;
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('clientName').value.trim();
+            const address = document.getElementById('clientAddress').value.trim();
+            const details = document.getElementById('orderDetails').value.trim();
+            const change = document.getElementById('clientChange').value.trim();
+
+            // Construir el mensaje estructurado
+            let message = `*¡NUEVO PEDIDO - TOY ANTOJAO!*%0A%0A`;
+            message += `👤 *Cliente:* ${name}%0A`;
+            message += `📍 *Dirección:* ${address}%0A`;
+            message += `🛒 *Pedido:* ${details}%0A`;
+            message += `💵 *Devuelta para:* ${change}%0A%0A`;
+            message += `_Recuerda cobrar entre 100 y 200 pesos de delivery en efectivo._`;
+
+            // Obtener el WhatsApp del repartidor en turno
+            const courierPhone = getNextCourier();
+
+            // Abrir WhatsApp con el mensaje listo
+            const whatsappURL = `https://wa.me/${courierPhone}?text=${message}`;
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+</body>
+</html>
