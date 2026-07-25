@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toy Antojao | Delivery Local - Río San Juan & Cabrera</title>
-    <!-- Tailwind CSS para un diseño moderno, rápido y responsive -->
+    <title>Toy Antojao | Tu Directorio de Delivery - Río San Juan & Cabrera</title>
+    <!-- Tailwind CSS para un diseño moderno y rápido -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-custom-orange { background-color: #f97316; }
@@ -18,18 +18,41 @@
     <!-- Encabezado -->
     <header class="bg-custom-blue text-white shadow-md py-4 px-6 text-center">
         <h1 class="text-3xl font-black tracking-wide">TOY ANTOJAO</h1>
-        <p class="text-sm text-sky-100 font-medium">Delivery Local en Río San Juan & Cabrera</p>
+        <p class="text-sm text-sky-100 font-medium">Pide directo al negocio en Río San Juan & Cabrera</p>
     </header>
 
     <!-- Contenido Principal -->
     <main class="max-w-md mx-auto w-full p-4 my-4 bg-white rounded-2xl shadow-xl border border-slate-100">
         <div class="text-center mb-6">
-            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pago en Efectivo Contra Entrega</span>
+            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pide con el delivery del negocio</span>
             <h2 class="text-xl font-bold mt-2 text-slate-900">¿Qué se te antoja hoy?</h2>
-            <p class="text-xs text-slate-500">Llena tus datos y tu pedido llegará volando.</p>
+            <p class="text-xs text-slate-500">Selecciona el lugar y tu pedido llegará directo a su WhatsApp.</p>
         </div>
 
         <form id="orderForm" class="space-y-4">
+            <!-- Categoría -->
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">1. Selecciona la Categoría</label>
+                <select id="categorySelect" required onchange="updateEstablishments()"
+                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm bg-white">
+                    <option value="">-- Elige una categoría --</option>
+                    <option value="comida">Comida Rápida</option>
+                    <option value="farmacia">Farmacias</option>
+                    <option value="colmado">Colmados</option>
+                    <option value="liquor">Liquors / Bebidas</option>
+                    <option value="supermercado">Supermercados</option>
+                </select>
+            </div>
+
+            <!-- Establecimiento -->
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">2. Selecciona el Establecimiento</label>
+                <select id="establishmentSelect" required
+                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm bg-white">
+                    <option value="">-- Primero elige una categoría --</option>
+                </select>
+            </div>
+
             <!-- Nombre -->
             <div>
                 <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tu Nombre</label>
@@ -37,30 +60,30 @@
                     class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
             </div>
 
-            <!-- Dirección -->
+            <!-- Dirección y Referencia -->
             <div>
-                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Dónde vives o estás? (Dirección / Referencia)</label>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Dirección y Referencia</label>
                 <input type="text" id="clientAddress" required placeholder="Ej. Calle Duarte, cerca del parque, casa azul" 
                     class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
             </div>
 
             <!-- Detalle del Pedido -->
             <div>
-                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Qué quieres y de cuál negocio?</label>
-                <textarea id="orderDetails" rows="3" required placeholder="Ej. 1 Pica Pollo grande con tostones de El Primo y un refresco." 
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Qué deseas ordenar?</label>
+                <textarea id="orderDetails" rows="3" required placeholder="Ej. 1 Hamburguesa especial con queso y papas fritas." 
                     class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm"></textarea>
             </div>
 
-            <!-- Devuelta para cuanto -->
+            <!-- Efectivo / Devuelta -->
             <div>
-                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Devuelta para cuánto? (Efectivo)</label>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">¿Con cuánto efectivo vas a pagar?</label>
                 <input type="text" id="clientChange" required placeholder="Ej. Pagaré con un billete de 1,000 pesos" 
                     class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
             </div>
 
             <!-- Botón de Enviar -->
             <button type="submit" class="w-full bg-custom-orange hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition duration-200 uppercase tracking-wider text-sm flex items-center justify-center space-x-2">
-                <span>¡Registrar Pedido por WhatsApp!</span>
+                <span>Enviar Pedido al WhatsApp del Local</span>
             </button>
         </form>
     </main>
@@ -70,50 +93,73 @@
         &copy; 2026 Toy Antojao. Todos los derechos reservados.
     </footer>
 
-    <!-- Script de Automatización y Rotación de Repartidores -->
+    <!-- Lógica de Categorías y Envío -->
     <script>
-        // Lista de números de WhatsApp de tus 3 o 4 repartidores (formato internacional sin el símbolo +)
-        const deliveryCouriers = [
-            "18090000001", // Reemplaza con el teléfono del Repartidor 1
-            "18090000002", // Reemplaza con el teléfono del Repartidor 2
-            "18090000003"  // Reemplaza con el teléfono del Repartidor 3
-        ];
+        // Base de datos de establecimientos con sus respectivos WhatsApps
+        const establishmentsData = {
+            comida: [
+                { name: "Sabor Urbano", phone: "18299123998" }
+                // Aquí puedes agregar más locales de comida rápida en el futuro
+            ],
+            farmacia: [
+                { name: "Farmacia GBC", phone: "18090000000" } // Reemplaza con el número real cuando lo tengas
+            ],
+            colmado: [
+                { name: "Colmado Ejemplo", phone: "18090000000" }
+            ],
+            liquor: [
+                { name: "Liquor Store Ejemplo", phone: "18090000000" }
+            ],
+            supermercado: [
+                { name: "Supermercado Ejemplo", phone: "18090000000" }
+            ]
+        };
 
-        // Función para rotar y seleccionar un repartidor automáticamente
-        function getNextCourier() {
-            let currentIndex = localStorage.getItem('courier_index') || 0;
-            currentIndex = parseInt(currentIndex);
+        function updateEstablishments() {
+            const category = document.getElementById('categorySelect').value;
+            const establishmentSelect = document.getElementById('establishmentSelect');
             
-            const selectedCourier = deliveryCouriers[currentIndex];
-            
-            // Pasar al siguiente repartidor para el próximo pedido
-            let nextIndex = (currentIndex + 1) % deliveryCouriers.length;
-            localStorage.setItem('courier_index', nextIndex);
-            
-            return selectedCourier;
+            // Limpiar opciones anteriores
+            establishmentSelect.innerHTML = '<option value="">-- Elige el establecimiento --</option>';
+
+            if (category && establishmentsData[category]) {
+                establishmentsData[category].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.phone;
+                    option.textContent = item.name;
+                    establishmentSelect.appendChild(option);
+                });
+            }
         }
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
+            const establishmentSelect = document.getElementById('establishmentSelect');
+            const businessPhone = establishmentSelect.value;
+            const businessName = establishmentSelect.options[establishmentSelect.selectedIndex].text;
+            
             const name = document.getElementById('clientName').value.trim();
             const address = document.getElementById('clientAddress').value.trim();
             const details = document.getElementById('orderDetails').value.trim();
             const change = document.getElementById('clientChange').value.trim();
 
-            // Construir el mensaje estructurado
-            let message = `*¡NUEVO PEDIDO - TOY ANTOJAO!*%0A%0A`;
+            if (!businessPhone) {
+                alert('Por favor selecciona un establecimiento.');
+                return;
+            }
+
+            // Construir el mensaje estructurado para el negocio
+            let message = `*¡PEDIDO NUEVO DESDE TOY ANTOJAO!*%0A%0A`;
+            message += `🏪 *Local:* ${businessName}%0A`;
             message += `👤 *Cliente:* ${name}%0A`;
-            message += `📍 *Dirección:* ${address}%0A`;
+            message += `📍 *Dirección / Referencia:* ${address}%0A`;
             message += `🛒 *Pedido:* ${details}%0A`;
-            message += `💵 *Devuelta para:* ${change}%0A%0A`;
-            message += `_Recuerda cobrar entre 100 y 200 pesos de delivery en efectivo._`;
+            message += `💵 *Efectivo / Devuelta:* ${change}%0A%0A`;
+            message += `_Enviado a través de Toy Antojao_`;
 
-            // Obtener el WhatsApp del repartidor en turno
-            const courierPhone = getNextCourier();
-
-            // Abrir WhatsApp con el mensaje listo
-            const whatsappURL = `https://wa.me/${courierPhone}?text=${message}`;
+            // Abrir el WhatsApp del establecimiento correspondiente
+            const whatsappURL = `https://wa.me/${businessPhone}?text=${message}`;
             window.open(whatsappURL, '_blank');
         });
     </script>
